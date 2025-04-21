@@ -1,8 +1,9 @@
-import { cart, removeFromCart, updateDeliveryOption} from '../../data/cart.js';
+import { cart, removeFromCart, updateDeliveryOption, updateQuantity} from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
 export function renderOrderSummary(){ //refreshes the page (Recursion technique)
 
@@ -38,10 +39,16 @@ export function renderOrderSummary(){ //refreshes the page (Recursion technique)
                   </div>
                   <div class="product-quantity">
                     <span>
-                      Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                      Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                     </span>
-                    <span class="update-quantity-link link-primary">
+                    <span class="update-quantity-link link-primary js-update-quantity-link"
+                    data-product-id = ${matchingProduct.id}>
                       Update
+                    </span>
+                    <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+                    <span class="save-quantity-link link-primary js-save-quantity-link"
+                    data-product-id = ${matchingProduct.id}>
+                      Save 
                     </span>
                     <span class="delete-quantity-link link-primary js-delete-quantity-link"
                     data-product-id = ${matchingProduct.id}>
@@ -98,8 +105,9 @@ export function renderOrderSummary(){ //refreshes the page (Recursion technique)
       const productId = link.dataset.productId;
       removeFromCart(productId);
 
-      const container = document.querySelector(`.js-cart-item-container-${productId}`);
-      container.remove();
+      renderCheckoutHeader();
+
+      renderOrderSummary();
 
       renderPaymentSummary();
     })
@@ -113,4 +121,30 @@ export function renderOrderSummary(){ //refreshes the page (Recursion technique)
       renderPaymentSummary();
     })
   })
+
+  
+document.querySelectorAll('.js-update-quantity-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+    const itemContainer = document.querySelector(`.js-cart-item-container-${productId}`);
+    itemContainer.classList.add('is-editing-quantity');
+  })
+})
+
+document.querySelectorAll('.js-save-quantity-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+  
+    const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+    const newQuantity = Number(quantityInput.value);
+
+    updateQuantity(productId, newQuantity);
+
+    renderCheckoutHeader();
+
+    renderOrderSummary();
+
+    renderPaymentSummary();
+  })
+})
 }

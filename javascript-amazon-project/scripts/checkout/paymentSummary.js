@@ -5,13 +5,15 @@ import { getDeliveryOption } from '../../data/deliveryOptions.js';
 export function renderPaymentSummary() {
     let productPriceRupees = 0;
     let shippingPriceRupees = 0;
-
+    let cartQuantity = 0;
     cart.forEach((cartItem) => {
         const product = getProduct(cartItem.productId);
         productPriceRupees += product.priceRupees * cartItem.quantity;
 
         const deliveryOption = getDeliveryOption(cartItem.deliveryOptionsId);
         shippingPriceRupees += deliveryOption.priceRupees;
+
+        cartQuantity += cartItem.quantity;
     });
     const total = productPriceRupees + shippingPriceRupees;
     const discountTenPercent = total * 0.1;
@@ -23,7 +25,7 @@ export function renderPaymentSummary() {
         </div>
 
         <div class="payment-summary-row">
-            <div>Items (3):</div>
+            <div>Items (${cartQuantity}):</div>
             <div class="payment-summary-money">₹${productPriceRupees.toFixed(2)}</div>
         </div>
 
@@ -39,7 +41,7 @@ export function renderPaymentSummary() {
 
         <div class="payment-summary-row">
             <div>Discount Applied(10%):</div>
-            <div class="payment-summary-money">-₹${discountTenPercent.toFixed(2)}</div>
+            <div class="payment-summary-money">- ₹${discountTenPercent.toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row total-row">
