@@ -9,6 +9,35 @@ export function getProduct(productId) {
   return matchingProduct;
 }
 
+/* 
+To add more enhanced features to products
+we uses class
+*/
+class Product { 
+  id;
+  image;
+  name;
+  rating;
+  priceRupees;
+
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceRupees = productDetails.priceRupees;
+  }
+
+  getStarUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`
+  }
+
+  getPrice() {
+    return `${Math.round(this.priceRupees)}`
+  }
+}
+
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -18,7 +47,7 @@ export const products = [
       stars: 4.5,
       count: 87
     },
-    priceRupees: 359,
+    priceRupees: 359.19,
     keywords: [
       "socks",
       "sports",
@@ -668,4 +697,6 @@ export const products = [
       "mens"
     ]
   }
-];
+].map( productDetails => {
+  return new Product(productDetails) ;
+});

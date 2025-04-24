@@ -35,7 +35,7 @@ export function renderOrderSummary(){ //refreshes the page (Recursion technique)
                     ${matchingProduct.name}
                   </div>
                   <div class="product-price">
-                    ₹${matchingProduct.priceRupees}
+                    ₹${matchingProduct.getPrice()}
                   </div>
                   <div class="product-quantity">
                     <span>
