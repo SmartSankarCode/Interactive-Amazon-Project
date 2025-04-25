@@ -25,7 +25,7 @@ class Product {
     this.image = productDetails.image;
     this.name = productDetails.name;
     this.rating = productDetails.rating;
-    this.priceRupees = productDetails.priceRupees;
+    this.priceRupees = productDetails.priceCents;
   }
 
   getStarUrl() {
@@ -67,7 +67,7 @@ export function loadProducts(fun) {
       return new Product(productDetails) ;
     });
     
-    fun();
+    fun()
   })
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
