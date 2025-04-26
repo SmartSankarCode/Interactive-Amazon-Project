@@ -10,7 +10,12 @@ import {loadProductsFetch} from '../data/products.js';
 // shortcut for promises
 // easy to understand and makes less code when taking more data
 async function loadPage() {
-    await loadProductsFetch();
+    try {
+        await loadProductsFetch();
+    }catch(error) {
+        console.log(`Unexpected error. Pleasae try again later.`)
+    }
+    
     renderCheckoutHeader();
     renderOrderSummary();
     renderPaymentSummary();
