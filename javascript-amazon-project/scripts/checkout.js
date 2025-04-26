@@ -13,9 +13,9 @@ async function loadPage() {
     try {
         await loadProductsFetch();
     }catch(error) {
-        console.log(`Unexpected error. Pleasae try again later.`)
+        console.log(`Unexpected error. Please try again later.`)
     }
-    
+
     renderCheckoutHeader();
     renderOrderSummary();
     renderPaymentSummary();
