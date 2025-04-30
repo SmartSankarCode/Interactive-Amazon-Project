@@ -17,8 +17,8 @@ export function renderPaymentSummary() {
         cartQuantity += cartItem.quantity;
     });
     const total = productPriceRupees + shippingPriceRupees;
-    const discountTenPercent = total * 0.1;
-    const orderTotal = total - discountTenPercent;
+    const taxTenPercent = Math.round(total * 0.1);
+    const orderTotal = total + taxTenPercent;
 
     const paymentSummaryHtml = `
         <div class="payment-summary-title">
@@ -41,8 +41,8 @@ export function renderPaymentSummary() {
         </div>
 
         <div class="payment-summary-row">
-            <div>Discount Applied(10%):</div>
-            <div class="payment-summary-money">- ₹${discountTenPercent.toFixed(2)}</div>
+            <div>Tax Applied(10%):</div>
+            <div class="payment-summary-money">₹${taxTenPercent.toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row total-row">
@@ -59,14 +59,20 @@ export function renderPaymentSummary() {
     document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHtml;
 
     document.querySelector('.js-place-order').addEventListener('click', async () => {
-        try{
+        try {
             const response = await fetch('https://supersimplebackend.dev/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    cart: cart
+                    cart: cart.map(cartItem => {
+                        return {
+                            productId: cartItem.productId,
+                            quantity: cartItem.quantity,
+                            deliveryOptionId: cartItem.deliveryOptionsId
+                        }
+                    })
                 })
             });
 
@@ -75,9 +81,9 @@ export function renderPaymentSummary() {
 
             window.location.href = 'orders.html';
 
-        }catch(error){
+        } catch (error) {
             console.log(`Unexpected error. Please try again later.`)
         }
-        
+
     })
 }
