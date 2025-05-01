@@ -1,6 +1,7 @@
 import { orders } from "../data/orders.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { getProduct, loadProductsFetch } from "../data/products.js";
+import { addToCart } from "../data/cart.js";
 
 async function loadPage() {
     await loadProductsFetch();
@@ -67,14 +68,15 @@ function loadOrdersPage() {
                         <div class="product-quantity">
                             Quantity: ${product.quantity}
                         </div>
-                        <button class="buy-again-button button-primary">
+                        <button class="buy-again-button button-primary js-buy-again-button"
+                        data-product-id="${matchingItem.id}">
                             <img class="buy-again-icon" src="images/icons/buy-again.png">
                             <span class="buy-again-message">Buy it again</span>
                         </button>
                     </div>
 
                     <div class="product-actions">
-                        <a href="tracking.html">
+                        <a href="tracking.html?orderId=${order.id}&productId=${matchingItem.id}">
                             <button class="track-package-button button-secondary">
                             Track package
                             </button>
@@ -87,4 +89,21 @@ function loadOrdersPage() {
     }
 
     document.querySelector('.js-orders-grid').innerHTML = ordersSummaryHtml;
+
+    document.querySelectorAll(`.js-buy-again-button`).forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.dataset.productId;
+
+            button.innerText = 'Added';
+
+            setTimeout(() => {
+                button.innerHTML = `
+                                    <img class="buy-again-icon" src="images/icons/buy-again.png">
+                                    <span class="buy-again-message">Buy it again</span>
+                                    `;
+            }, 1000);
+
+            addToCart(productId, 1);
+        })
+    })
 }
