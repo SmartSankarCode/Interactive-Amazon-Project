@@ -5,7 +5,6 @@ import { addToCart } from "../data/cart.js";
 
 async function loadPage() {
     await loadProductsFetch();
-
     loadOrdersPage();
 }
 

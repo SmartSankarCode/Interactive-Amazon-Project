@@ -7,7 +7,7 @@ loadProductsFetch().then(() => {
 
 //loadProducts(renderProductsGrid);
 
-function renderProductsGrid() {
+export function renderProductsGrid() {
 
     let productshtml = '';
 
