@@ -7,11 +7,33 @@ loadProductsFetch().then(() => {
 
 //loadProducts(renderProductsGrid);
 
-export function renderProductsGrid() {
+function renderProductsGrid() {
 
     let productshtml = '';
 
-    products.forEach((product) => {
+    const url = new URL(window.location.href);
+    const search = url.searchParams.get('search');
+
+    document.querySelector('.js-search-bar').value = search || '';
+
+    let filterProducts = products;
+
+    if(search) {
+        filterProducts = products.filter((product) => {
+            // return product.name.toLowerCase().includes(search.toLowerCase());
+            let matchingKeyword = false;
+
+            product.keywords.forEach(keyword => {
+                if(keyword.toLowerCase().includes(search.toLowerCase())) {
+                    matchingKeyword = true;
+                }
+            });
+
+            return matchingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
+        });
+    }
+
+    filterProducts.forEach((product) => {
         productshtml += `
             <div class="product-container">
             <div class="product-image-container">
@@ -38,7 +60,7 @@ export function renderProductsGrid() {
             <div class="product-quantity-container">
             <select class="js-quantity-selector-${product.id}">
                 <option selected value="1">1</option>
-                <option value="2">2</option>g
+                <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
@@ -105,4 +127,16 @@ export function renderProductsGrid() {
             updateCartQuanatity();
         })
     })
+
+    document.querySelector('.js-search-button').addEventListener('click', () => {
+        const search = document.querySelector('.js-search-bar').value;
+        window.location.href = `amazon.html?search=${search}`;
+    });
+
+    document.querySelector('.js-search-bar').addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            document.querySelector('.js-search-button').click();
+        }
+    });
+    
 }
