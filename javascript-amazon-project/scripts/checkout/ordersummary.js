@@ -7,6 +7,22 @@ import { renderCheckoutHeader } from './checkoutHeader.js';
 
 export function renderOrderSummary(){ //refreshes the page (Recursion technique)
 
+  if(cart.length === 0) {
+    const viewAllProducts = document.querySelector('.js-order-summary');
+
+    viewAllProducts.classList.add('js-cart-summary');
+    viewAllProducts.innerHTML = 
+                `
+                <div class="empty-cart-message">
+                Your cart is empty.
+                </div>
+                <a class="button-primary view-products-link" href="amazon.html">
+                View products
+                </a>
+                `
+    return;
+  }
+
   let cartSummaryHtml = '';
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
@@ -45,7 +61,7 @@ export function renderOrderSummary(){ //refreshes the page (Recursion technique)
                     data-product-id = ${matchingProduct.id}>
                       Update
                     </span>
-                    <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+                    <input class="quantity-input js-quantity-input-${matchingProduct.id}" type="number" min="1">
                     <span class="save-quantity-link link-primary js-save-quantity-link"
                     data-product-id = ${matchingProduct.id}>
                       Save 
@@ -127,7 +143,11 @@ document.querySelectorAll('.js-update-quantity-link').forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
     const itemContainer = document.querySelector(`.js-cart-item-container-${productId}`);
+    const quantity = document.querySelector(`.js-quantity-label-${productId}`).textContent;
+
     itemContainer.classList.add('is-editing-quantity');
+
+    document.querySelector(`.js-quantity-input-${productId}`).value = quantity;
   })
 })
 

@@ -37,24 +37,8 @@ class Product {
   getPrice() {
     return `${Math.round(this.priceRupees)}`
   }
-
-  extraInfoHTML() {
-    return '';
-  }
 }
 
-class Clothing extends Product {
-  sizeChartLink;
-  
-  constructor(productDetails) {
-    super(productDetails);
-    this.sizeChartLink = productDetails.sizeChartLink;
-  }
-
-  extraInfoHTML() {
-    return `<a href="${this.sizeChartLink}" target="_blank">Size chart</a>`;
-  }
-}
 
 export let products = [];
 
@@ -63,9 +47,6 @@ export function loadProductsFetch() {
     return response.json();
   }).then(productsData => {
     products = productsData.map( productDetails => {
-      if(productDetails.type === 'clothing'){
-        return new Clothing(productDetails);
-      }
       return new Product(productDetails) ;
     });
 

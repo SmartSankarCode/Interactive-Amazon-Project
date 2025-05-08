@@ -2,6 +2,8 @@ import { getOrder } from '../data/orders.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
+loadTrackingPage();
+
 async function loadTrackingPage() {
 
     await loadProductsFetch();
@@ -25,6 +27,8 @@ async function loadTrackingPage() {
     const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
     const percentProgress = ((today - orderTime) / (deliveryTime - orderTime)) * 100;
 
+    const deliveredMessage = today < deliveryTime ? 'Arriving on' : 'Delivered on';
+
     const trackingHtml =
                         `
                         <a class="back-to-orders-link link-primary" href="orders.html">
@@ -32,7 +36,7 @@ async function loadTrackingPage() {
                         </a>
 
                         <div class="delivery-date">
-                        Arriving on ${dayjs(productDetails.estimatedDeliveryTime).format('dddd, MMMM D')}
+                        ${deliveredMessage} ${dayjs(productDetails.estimatedDeliveryTime).format('dddd, MMMM D')}
                         </div>
 
                         <div class="product-info">
@@ -65,5 +69,3 @@ async function loadTrackingPage() {
 
     document.querySelector('.js-order-tracking').innerHTML = trackingHtml;
 }
-
-loadTrackingPage();

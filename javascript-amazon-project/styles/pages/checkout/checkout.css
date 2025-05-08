@@ -205,10 +205,32 @@
   padding-top: 12px;
   padding-bottom: 12px;
   border-radius: 8px;
-
   margin-top: 11px;
   margin-bottom: 15px;
 }
+
+.place-order-button-disabled{
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 8px;
+  margin-top: 11px;
+  margin-bottom: 15px;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.view-products-link {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 16px;   
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
 
 .quantity-input{
   width: 30px;

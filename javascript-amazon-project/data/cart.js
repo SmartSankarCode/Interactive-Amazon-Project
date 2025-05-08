@@ -82,3 +82,17 @@ export function updateQuantity(productId, newQuantity){
     matchingItem.quantity = newQuantity;
     saveToStorage();
 }
+
+export function resetCart() {
+    cart = [];
+    saveToStorage();
+}
+
+export function updateCartQuanatity(){
+    let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+    })
+    
+    return document.querySelector(`.js-cart-quantity`).innerHTML = cartQuantity;
+}

@@ -1,16 +1,15 @@
 import { orders } from "../data/orders.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { getProduct, loadProductsFetch } from "../data/products.js";
-import { addToCart } from "../data/cart.js";
+import { addToCart, updateCartQuanatity } from "../data/cart.js";
 
 async function loadPage() {
     await loadProductsFetch();
     loadOrdersPage();
 }
 
+updateCartQuanatity();
 loadPage();
-
-
 
 function loadOrdersPage() {
 
@@ -103,6 +102,8 @@ function loadOrdersPage() {
             }, 1000);
 
             addToCart(productId, 1);
+            
+            updateCartQuanatity();
         })
     })
 }

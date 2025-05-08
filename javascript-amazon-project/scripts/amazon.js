@@ -1,4 +1,4 @@
-import {cart, addToCart} from '../data/cart.js';
+import {updateCartQuanatity, addToCart} from '../data/cart.js';
 import {products, loadProductsFetch} from '../data/products.js';
 
 loadProductsFetch().then(() => {
@@ -72,8 +72,6 @@ function renderProductsGrid() {
             </select>
             </div>
 
-            ${product.extraInfoHTML()}
-
             <div class="product-spacer"></div>
 
             <div class="added-to-cart js-added-to-cart-${product.id}">
@@ -89,14 +87,6 @@ function renderProductsGrid() {
     })
 
     document.querySelector('.js-products-grid').innerHTML = productshtml;
-
-    function updateCartQuanatity(){
-        let cartQuantity = 0;
-        cart.forEach((cartItem) => {
-            cartQuantity += cartItem.quantity;
-        })
-        document.querySelector(`.js-cart-quantity`).innerHTML = cartQuantity;
-    }
 
     updateCartQuanatity();
 
@@ -135,6 +125,8 @@ function renderProductsGrid() {
 
     document.querySelector('.js-search-bar').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
+            // const searchTerm = document.querySelector('.js-search-bar').value;
+            // window.location.href = `amazon.html?search=${searchTerm}`;
             document.querySelector('.js-search-button').click();
         }
     });
