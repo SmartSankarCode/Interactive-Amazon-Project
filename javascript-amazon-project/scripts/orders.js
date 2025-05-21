@@ -45,10 +45,13 @@ function loadOrdersPage() {
                         `;
     })
 
-    function orderList(order) {
+    function orderList(order) {   
         let listItems = '';
 
         order.products.forEach(product => {
+            const today = dayjs();
+            const deliveryTime = dayjs(product.estimatedDeliveryTime);
+            const deliveredMessage = today < deliveryTime ? 'Arriving on' : 'Delivered on';
             const matchingItem = getProduct(product.productId)
             
             listItems +=
@@ -61,7 +64,7 @@ function loadOrdersPage() {
                             ${matchingItem.name}
                         </div>
                         <div class="product-delivery-date">
-                            Arriving on: ${dayjs(product.estimatedDeliveryTime).format('MMMM D')}
+                            ${deliveredMessage}: ${dayjs(product.estimatedDeliveryTime).format('MMMM D')}
                         </div>
                         <div class="product-quantity">
                             Quantity: ${product.quantity}
